@@ -1,0 +1,82 @@
+# NOTE! Please use 'git ls-files -i --exclude-standard'
+# Normal rules
+.*
+*.o
+*.o.*
+*.a
+*.s
+*.ko
+*.so
+*.so.dbg
+*.mod.c
+*.i
+*.lst
+*.symtypes
+*.order
+*.elf
+*.bin
+*.gz
+*.bz2
+*.lzma
+*.patch
+*.gcno
+*.exe
+*.obj
+*.ncb
+*.suo
+
+#
+# Top-level generic files
+#
+tags
+TAGS
+CVS
+vmlinux
+System.map
+Module.markers
+Module.symvers
+!.gitignore
+!.cvsignore
+!.mailmap
+
+#
+# Generated include files
+#
+include/asm
+include/asm-*/asm-offsets.h
+include/config
+include/linux/autoconf.h
+include/linux/compile.h
+include/linux/version.h
+include/linux/utsrelease.h
+include/linux/bounds.h
+include/generated
+dll_release/
+dll_debug/
+lib_release/
+lib_debug/
+obj/
+bin/
+lib/
+html/
+
+# stgit generated dirs
+patches-*
+
+# quilt's files
+patches
+series
+
+# cscope files
+cscope.*
+ncscope.*
+
+# gnu global files
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+
+*.orig
+*~
+\#*#
