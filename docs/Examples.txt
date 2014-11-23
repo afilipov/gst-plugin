@@ -1,0 +1,22 @@
+export GST_PLUGIN_PATH=<your_path>/lib
+
+gst-launch-1.0 v4l2src device=/dev/video0 ! video/x-raw,framerate=30/1,width=320,height=240 ! gvision ! videoconvert ! ximagesink sync=false
+gst-launch-1.0 videotestsrc ! video/x-raw,framerate=30/1,width=320,height=240 ! gvision ! videoconvert ! ximagesink sync=false
+gst-launch-1.0 filesrc location=~/Videos/GOPR1001_1494677767346_high.MP4 ! decodebin name=dec ! videoconvert ! autovideosink dec. ! audioconvert ! audioresample ! alsasink
+#gst-launch-0.10 filesrc location=~/Videos/GOPR1001_1494677767346_high.MP4 ! qtdemux name=demux demux. ! queue ! faad ! audioconvert ! audioresample ! autoaudiosink demux. ! queue ! ffdec_h264 ! ffmpegcolorspace ! autovideosink
+gst-launch-1.0 filesrc location=~/Videos/GOPR1001_1494677767346_high.MP4 ! decodebin name=dec ! videoconvert ! videoscale ! video/x-raw,width=640,height=340 ! autovideosink
+gst-launch-1.0 filesrc location=~/Videos/GOPR1001_1494677767346_high.MP4 ! decodebin name=dec ! videoconvert ! videoscale ! video/x-raw,width=640,height=480 ! gvision ! autovideosink
+/* UnBarrel */
+gst-launch-1.0 v4l2src device=/dev/video0 ! video/x-raw,format=YV12 ! gvision ! videoconvert ! ximagesink sync=false
+gst-launch-1.0 -v filesrc location=~/Videos/GoPro/GOPR1005_1495049931562_high.MP4 ! decodebin name=dec ! videoconvert ! videoscale ! video/x-raw,width=352,height=288,format=RGB ! videoconvert ! gvision ! videoconvert ! ximagesink sync=false
+
+#Resize and merge
+gst-launch-1.0 -e filesrc location=~/Videos/GoPro/GOPR1009_1495085227402_high.MP4 ! decodebin name=decode ! videoscale ! 'video/x-raw,width=480,height=270' ! videoconvert ! gvision ! videoconvert ! x264enc ! queue ! mp4mux name=mp4mux ! filesink location=video00.mp4 decode. ! audioconvert ! lamemp3enc bitrate=128 ! queue ! mp4mux
+gst-launch-1.0 -e filesrc location=~/Videos/GoPro/GOPR1009_1495085227402_high.MP4 ! decodebin name=decode ! videoscale ! 'video/x-raw,width=480,height=270' ! x264enc ! queue ! mp4mux name=mp4mux ! filesink location=video01.mp4 decode. ! audioconvert ! lamemp3enc bitrate=128 ! queue ! mp4mux.
+ffmpeg -i video00.mp4 -i video01.mp4 -filter_complex "[0:v:0]pad=(iw*2)+10:ih:color=white[bg]; [bg][1:v:0]overlay=w+10" output.mp4
+gst-launch-1.0 -v v4l2src device=/dev/video0 ! video/x-raw,format=RGB ! gvision ! videoconvert ! ximagesink sync=false
+gst-launch-1.0 -v v4l2src device=/dev/video0 ! video/x-raw,format=RGB ! gvision ! videoconvert ! ximagesink sync=false
+gst-launch-1.0 -v v4l2src device=/dev/video0 extra-controls="c,exposure_auto=1" ! videoconvert ! gvision ! videoconvert ! ximagesink sync=false
+gst-launch-1.0 -v v4l2src device=/dev/video0 extra-controls="c,exposure_auto=1" ! gvision ! videoconvert ! ximagesink sync=false
+
+v4l2-ctl -d /dev/video0 --set-ctrl=exposure_absolute=4096
